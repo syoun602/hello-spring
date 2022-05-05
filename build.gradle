@@ -1,7 +1,7 @@
 plugins {
 	id 'org.springframework.boot' version '2.5.4'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
+	id 'java' // gradle에 대해서도 추후에 공부해야
 }
 
 group = 'hello'
@@ -13,9 +13,9 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // html 만드는 템플릿 엔진
+	implementation 'org.springframework.boot:spring-boot-starter-web' // 웹 프로젝트
+	testImplementation 'org.springframework.boot:spring-boot-starter-test' // 현재 기본 JUnit 5
 }
 
 test {

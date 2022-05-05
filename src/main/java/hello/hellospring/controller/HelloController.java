@@ -12,7 +12,7 @@ public class HelloController {
     @GetMapping("hello") // Web에서 /hello로 접속하면 해당 method 호출
     public String hello(Model model) {
         model.addAttribute("data", "hello!");
-        return "hello";
+        return "hello"; // resources/templates에서 찾아서 넘겨줌
     }
 
     @GetMapping("hello-mvc")
@@ -25,5 +25,26 @@ public class HelloController {
     @ResponseBody
     public String helloString(@RequestParam("name") String name) {
         return "hello" + name;
+    }
+
+    @GetMapping("hello-api")
+    @ResponseBody
+    public Hello helloApi(@RequestParam("name") String name) {
+        final Hello hello = new Hello();
+        hello.setName(name);
+        return hello;
+    }
+
+    static class Hello {
+
+        private String name;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(final String name) {
+            this.name = name;
+        }
     }
 }
