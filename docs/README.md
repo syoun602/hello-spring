@@ -109,3 +109,46 @@
 - findByName() , findByEmail() 처럼 메서드 이름 만으로 조회 기능 제공 페이징 기능 자동 제공
 
 > 참고: 실무에서는 JPA와 스프링 데이터 JPA를 기본으로 사용하고, 복잡한 동적 쿼리는 Querydsl이라는 라이브러리를 사용하면 된다. Querydsl을 사용하면 쿼리도 자바 코드로 안전하게 작성할 수 있고, 동적 쿼리도 편리하게 작성할 수 있다. 이 조합으로 해결하기 어려운 쿼리는 JPA가 제공하는 네이티브 쿼리를 사용하거나, 앞서 학습한 스프링 JdbcTemplate를 사용하면 된다.
+
+## AOP
+AOP란? - Aspect Oriented Programming (관점 지향 프로그래밍)
+
+### AOP가 필요한 상황
+- 모든 메소드의 호출 시간을 측정하고 싶다면?
+- 공통 관심 사항(cross-cutting concern) vs 핵심 관심 사항(core concern) 
+- 회원 가입 시간, 회원 조회 시간을 측정하고 싶다면?
+![img.png](imgs/withoutAopSpringContainer.png)  
+
+`마주치는 문제`
+- 회원가입, 회원 조회에 시간을 측정하는 기능은 핵심 관심 사항이 아니다. 
+- 시간을 측정하는 로직은 공통 관심 사항이다.
+- 시간을 측정하는 로직과 핵심 비즈니스의 로직이 섞여서 유지보수가 어렵다. 
+- 시간을 측정하는 로직을 별도의 공통 로직으로 만들기 매우 어렵다.
+- 시간을 측정하는 로직을 변경할 때 모든 로직을 찾아가면서 변경해야 한다.
+
+`AOP를 사용한다면?`
+- AOP: Aspect Oriented Programming
+- 공통 관심 사항(cross-cutting concern) vs 핵심 관심 사항(core concern) 분리
+![img.png](imgs/withAopSpringContainer.png)
+
+- 회원가입, 회원 조회등 핵심 관심사항과 시간을 측정하는 공통 관심 사항을 분리한다. 
+- 시간을 측정하는 로직을 별도의 공통 로직으로 만들었다.
+- 핵심 관심 사항을 깔끔하게 유지할 수 있다.
+- 변경이 필요하면 이 로직만 변경하면 된다.
+- 원하는 적용 대상을 선택할 수 있다.
+
+### 스프링의 AOP 동작 방식
+#### AOP 적용 전 의존관계
+![img.png](imgs/beforeAopDependency.png)  
+- helloController가 memberService를 의존하고 있으니 당연히 controller에서 메서드를 호출하면 memberService로부터 불려와짐
+
+#### AOP 적용 후 의존관계
+![img.png](imgs/afterAopDependency.png)  
+- AOP를 적용하면 **프록시** 라는 가짜 memberService를 만들게 됨.
+- 그래서 스프링 컨테이너가 띄워질 때 (즉, 스프링 빈에 등록할 때), 진짜 memberService가 아니라 가짜 (proxy memberService)를 앞에 세워 둠. 이후 내부적으로 `joinPoint.proceed()`가 실행될 때, 진짜 memberService를 호출해줌.
+> memberController의 생성자에서 memberService가 주입되고나서 `memberService.getClass()`를 찍어보면 실제로 `EnhancerBySpringCGLIB`와 같은 이상한 복제된 서비스가 만들어져 있는 것을 확인할 수 있음 
+
+#### AOP 적용 전 전체 그림
+![img.png](imgs/withoutAopArchitecture.png)  
+#### AOP 적용 후 전체 그림
+![img.png](imgs/withAopArchitecture.png)  
