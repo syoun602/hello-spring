@@ -15,7 +15,8 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // html 만드는 템플릿 엔진
 	implementation 'org.springframework.boot:spring-boot-starter-web' // 웹 프로젝트
-	implementation 'org.springframework.boot:spring-boot-starter-jdbc' // 자바에서는 jdbc가 있어야 DB랑 연동이 가능
+//	implementation 'org.springframework.boot:spring-boot-starter-jdbc' // 자바에서는 jdbc가 있어야 DB랑 연동이 가능
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test' // 현재 기본 JUnit 5
 }
