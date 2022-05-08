@@ -1,6 +1,7 @@
 package hello.hellospring;
 
 import hello.hellospring.repository.JdbcMemberRepository;
+import hello.hellospring.repository.JdbcTemplateMemberRepository;
 import hello.hellospring.repository.MemberRepository;
 import hello.hellospring.service.MemberService;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +25,7 @@ public class SpringConfig {
     @Bean
     public MemberRepository memberRepository() {
 //        return new MemoryMemberRepository();
-        return new JdbcMemberRepository(dataSource); // Memory에서 Jdbc로 변경
+//        return new JdbcMemberRepository(dataSource); // Memory에서 Jdbc로 변경
+        return new JdbcTemplateMemberRepository(dataSource); // Jdbc에서 JdbcTemplate으로 변경
     }
 }
